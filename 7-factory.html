@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+        var myApp=angular.module('myApp',[]);
+        myApp.factory('Data',function(){
+            return{message:" share data between controllers "};
+        });
+        myApp.filter('reverse', function () {
+            return function (text) {
+                return text.split('').reverse().join('');
+            }
+        });
+
+
+        function FirstCtrl($scope,Data){
+            $scope.data=Data
+        }
+        function SecondCtrl($scope,Data){
+            $scope.data=Data
+            $scope.reverse=function(msg){
+                return msg.split('').reverse().join('');
+            }
+            $scope.reverseMessage=function(){
+                return $scope.data.message.split('').reverse().join('');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div ng-controller="FirstCtrl">
+        <input type="text" ng-model="data.message"/>
+        <h3>{{data.message}}</h3>
+    </div>
+    <div ng-controller="SecondCtrl">
+        <input type="text" ng-model="data.message"/>
+        <h3>{{data.message}}</h3>
+        <h3>{{reverse(data.message)}}</h3>
+        <h3>{{reverseMessage()}}</h3>
+        <h3>{{data.message | reverse}}</h3>
+    </div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+        angular.module('myApp', [])
+                .provider('githubService', {
+                     githubUrl : 'https://api.github.com',
+                     githubUsername : null,
+                    runUserRequest:  function(path,$http) {
+                    // Return the promise from the $http service
+                    // that calls the Github API using JSONP
+                        return $http({method: 'JSONP',
+                            url: this.githubUrl + '/users/' +
+                                    this.githubUsername + '/' +
+                                    path + '?callback=JSON_CALLBACK'
+                        });
+                    },
+                    // Return the service object with two methods
+                    // events
+                    // and setUsername
+                    $get: function($http) {
+                        var self=this;
+                        return {
+                            events: function () {
+                                return self.runUserRequest('events',$http);
+                            },
+                            setUsername: function (username) {
+                                self.githubUsername = username;
+                            }
+                        };
+                    }
+                }).controller('ServiceController',
+                function($scope, githubService) {
+                    $scope.getGithubApiData= function(event){
+                        if (event.keyCode === 13){
+                            githubService.setUsername($scope.username);
+                            githubService.events().success(function (data) {
+                                console.log(data.data);
+                                $scope.events = data.data;
+                                $scope.metadata = data.meta;
+                            }).error(function (data) {
+                                $scope.message = data;
+                                console.log('this is a big issue');
+                            });
+                        }
+                    }
+                    //$scope.setUsername = githubService.setUsername;
+                });
+    </script>
+</head>
+<body>
+<div ng-controller="ServiceController">
+    <label for="username">
+        Type in a GitHub username
+    </label>
+    <input type="text"
+           ng-model="username"
+           placeholder="Enter a GitHub username" ng-keydown="getGithubApiData($event)" autofocus="autofocus"/>
+    <ul>
+        <div> {{ metadata | json }} </div>
+        <li ng-repeat="event in events">
+            <!--
+            event.actor and event.repo are returned
+            by the github API. To view the raw
+            API, uncomment the next line:
+            -->
+            <!-- {{ event | json }} -->
+            {{ event.actor.login }} {{ event.repo.name }}
+        </li>
+    </ul>
+</div>
+</body>
+</html>

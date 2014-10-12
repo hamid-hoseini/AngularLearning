@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html ng-app>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="js/controllers/app.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
+
+</head>
+<body>
+<!--See more filter in:
+    https://docs.angularjs.org/api/ng/filter/filter-->
+
+    <div id="container" ng-controller="AppCtrl">
+        <h1>AngulAir</h1>
+        <div class="pull-left span6">
+        <ul>
+            <li  ng-repeat="airport in airports">
+            <a href="" ng-click="setAirport(airport.code)">{{airport.code}} - {{airport.city}}</a>
+            -
+            <a href="" ng-click="editAirport(airport.code)">Edit</a>
+            </li>
+        </ul>
+        <!-- ng-show is a angular directive and will not show if the its variable be Null, Undefined or False -->
+        <p ng-show="currentAirport">Current Airport: {{currentAirport.name}}</p>
+        </div>
+        <div class="span5" ng-include="sidebarURL"></div>
+        <div class="span5" ng-include="formURL"></div>
+
+    </div>
+</body>
+</html>

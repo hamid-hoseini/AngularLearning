@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .panel{
+            background-color: red;
+        }
+    </style>
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+        var myApp=angular.module('myApp',[]);
+        myApp.directive('superman', function () {
+            return{
+                restrict : "E",
+                template: "<div> He is supper hero...!</div>"
+            }
+        });
+        myApp.directive('superflash', function () {
+            return{
+                restrict : "A",
+                link: function () {
+                    alert('I am so fast...!');
+                }
+            }
+        });
+        myApp.directive('enter', function () {
+            return function (scope,element,attr) {
+                element.bind('mouseenter', function () {
+                    //console.log('mouse entered...!');
+                    element.addClass(attr.enter);
+                });
+            }
+
+        });
+        myApp.directive('leave', function () {
+            return function (scope,element,attr) {
+                element.bind('mouseleave', function () {
+                    //console.log('mouse exited...!');
+                    element.removeClass(attr.enter);
+                });
+            }
+
+        });
+    </script>
+</head>
+<body>
+<div >
+    <superman></superman>
+    <div superflash></div>
+    <div  enter="panel" leave>enter you mouse pointer here...</div>
+</div>
+</body>
+</html>

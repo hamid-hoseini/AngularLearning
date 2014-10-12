@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+        function MyService(){};
+        MyService.prototype.info = function(){
+            return "myService value...";
+        };
+
+        myApp=angular.module('myApp',[]).
+                provider('myProvider',{ $get : function(){
+                    return "myProvider value...";
+                }}).
+                factory('myFactory', function () {
+                    return "myFactory value...";
+                }).
+                service('myService', MyService).
+                controller('myCtrl',['$scope','myProvider','myFactory','myService', function ($scope,myProvider,myFactory,myService) {
+                    $scope.providerInView = myProvider;
+                    $scope.factoryInView = myFactory;
+                    $scope.serviceInView = myService.info();
+
+                }])
+    </script>
+</head>
+<body>
+    <div ng-controller="myCtrl">
+        {{providerInView}}
+        <br/>
+        {{factoryInView}}
+        <br/>
+        {{serviceInView}}
+    </div>
+</body>
+</html>

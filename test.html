@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="imdbApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script>
+
+        var imdbApp = angular.module('imdbApp', ['ngRoute', 'ngResource']);
+        imdbApp.factory('imdbApi', ['$resource', function ($resource) {
+            return $resource('https://api.github.com/search/repositories?q=:q&per_page=:perPage&page=:page');
+        }]);
+
+        imdbApp.controller('SearchController', ['$scope', 'imdbApi', '$http', function ($scope, imdb, $http) {
+
+            $scope.page = 1;
+            $scope.numPerPage = 25;
+            $scope.query = 'angularjs';
+            $scope.config={
+                q:'angularjs',
+                per_page: 25,
+                page: 1
+            }
+            $scope.results=[];
+            $scope.find = function(){
+                var url='https://api.github.com/search/repositories?q='+encodeURIComponent($scope.config.q)+'&per_page='+$scope.config.per_page+'&page='+$scope.config.page;
+                $http.get(url).success(function(data){
+                    $scope.results= data.items;
+                });
+            }
+
+        }]);i
+
+    </script>
+
+</head>
+<body>
+<div ng-app="imdbApp">
+    <div ng-controller="SearchController">
+        <form class="form-inline" role="form">
+            <div class="form-group">
+                <label for="query">Search Repositories:</label>
+                <input type="text" name="query"  ng-model="query" />
+            </div>
+            <button type="button" ng-click="search()" class="btn btn-default">Submit</button>
+        </form>
+        <h2>You searched for:"{{query}}"<small> Found {{results.total_count}} matches.</small>
+        </h2>
+        <ul class='result'>
+            <li ng-repeat='repo in results'>
+                <div>Repository Name: {{repo.name}}</div>
+                <div>User Name : {{repo.owner.login}}</div>
+                <div ng-hide='repo.has_issues'>
+                   <span>
+                       {{}}
+                   </span>
+                </div>
+
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

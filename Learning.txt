@@ -1,0 +1,8 @@
+we need to set server:
+1- check the version of Node by -> Node --version
+2- download the NodeJS if there is no in the machine
+3- after installing Node, we need to set and install Node dependencies by ->  npm install
+4- to start the server -> node index.js
+5- it shows => Server ready  to http://localhost:3000
+6- go to browser and type -> http://localhost:3000
+7- every time we can copy the public folder from Exercise folder to node folder

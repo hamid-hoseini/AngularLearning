@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script>
+        // reference: https://www.youtube.com/watch?v=JF5fRNQJxRU
+
+        var myApp=angular.module('myApp',[]);
+        myApp.controller('myCtrl', function ($scope) {
+            $scope.loadMoreTweets= function () {
+                console.log('Loading Tweets...!');
+            }
+            $scope.deleteTweets= function () {
+                console.log('deleting Tweets...!');
+            }
+        });
+        myApp.directive('enter', function () {
+            return function (scope,element,attr) {
+                element.bind('mouseenter', function () {
+                    //console.log('mouse entered...!');
+                    //scope.loadMoreTweets();
+                    //scope.$apply('loadMoreTweets()');
+                    scope.$apply(attr.enter);
+                })
+            }
+        });
+    </script>
+</head>
+<body>
+<div ng-controller="myCtrl">
+
+    <div  enter="loadMoreTweets()" leave>enter you mouse pointer here...</div>
+    <div  enter="deleteTweets()" leave>enter you mouse pointer here to invoke delete tweets</div>
+</div>
+</body>
+</html>

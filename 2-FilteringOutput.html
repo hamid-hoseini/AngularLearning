@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="js/controllers/app.js"></script>
+
+</head>
+<body>
+<!--See more filter in:
+    https://docs.angularjs.org/api/ng/filter/filter-->
+
+    <div id="container" ng-controller="AppCtrl">
+    <ul ng-repeat="airport in airports">
+
+        <li>{{airport.code}}</li>
+        <li>{{airport.name}}</li>
+        <li>{{airport.city | uppercase}}</li>
+
+    </ul>
+        <p>{{'128' | currency}}</p>
+        <p>{{airports | json}}</p>
+    </div>
+</body>
+</html>
